@@ -1,0 +1,26 @@
+```yaml
+image: gitpod/workspace-php-mysql
+
+tasks:
+  - init: |
+      mysql -e "CREATE DATABASE laravel"
+      composer create-project --prefer-dist laravel/laravel:^8.0 .
+      cp .env.example .env
+      sed -i 's/DB_DATABASE=laravel/DB_DATABASE=laravel/' .env
+      sed -i 's/DB_USERNAME=root/DB_USERNAME=gitpod/' .env
+      sed -i 's/DB_PASSWORD=/DB_PASSWORD=/' .env
+      php artisan key:generate
+    command: php artisan serve
+
+ports:
+  - port: 8000
+    onOpen: open-preview
+  - port: 3306
+    onOpen: ignore
+
+github:
+  prebuilds:
+    master: true
+    branches: true
+    pullRequests: true
+```
